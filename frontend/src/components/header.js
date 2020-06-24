@@ -8,8 +8,6 @@ const Header = props => {
   const alternateLinks = useContext(AlternateLinksContext)
   const { t, i18n } = useTranslation("common")
 
-  console.log(i18n.language)
-
   const menu = useStaticQuery(graphql`
     query HeaderQuery {
       allSanityPage {
@@ -30,8 +28,6 @@ const Header = props => {
       }
     }
   `)
-
-  console.log(menu)
 
   return (
     <header
