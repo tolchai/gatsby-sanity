@@ -81,7 +81,7 @@ exports.createPages = async ({
       component: projectTemplate,
       context: { project: node.id },
     }),
-    ["common", "project"],
+    ["common"],
     createPage
   )
 
