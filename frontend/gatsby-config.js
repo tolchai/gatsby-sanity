@@ -1,8 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Helder Sanity`,
+    description: `Test website created with Gatsby.js and Sanity CMS`,
+    author: `@matousbarnat`,
+    siteUrl: "https://changethis.netlify.com",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -13,6 +14,7 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    `gatsby-plugin-netlify`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -43,6 +45,48 @@ module.exports = {
         // If the Sanity GraphQL API was deployed using `--tag <name>`,
         // use `graphqlTag` to specify the tag name. Defaults to `default`.
         graphqlTag: "default",
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        exclude: ["/404", "/*/404"],
+        query: `
+        {
+          site {
+            siteMetadata {
+              siteUrl
+            }
+          }
+
+          allSitePage {
+            edges {
+              node {
+                path
+                context {
+                  alternateLinks {
+                    language
+                    path
+                  }
+                }
+              }
+            }
+          }
+        }`,
+        serialize: ({ site, allSitePage }) =>
+          allSitePage.edges.map(edge => {
+            return {
+              url: site.siteMetadata.siteUrl + edge.node.path,
+              changefreq: `daily`,
+              priority: 0.7,
+              links:
+                edge.node.context.alternateLinks &&
+                edge.node.context.alternateLinks.map(link => ({
+                  lang: link.language,
+                  url: site.siteMetadata.siteUrl + link.path,
+                })),
+            }
+          }),
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

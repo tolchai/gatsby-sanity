@@ -4,4 +4,7 @@
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
 
-// You can delete this file if you're not using it
+const wrapWithI18nProvider = require("./src/components/wrapWithI18nProvider")
+  .wrapWithI18nProvider
+
+exports.wrapPageElement = wrapWithI18nProvider

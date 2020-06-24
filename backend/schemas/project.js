@@ -39,7 +39,7 @@ export default {
     {
       name: "description",
       title: "Description",
-      type: "text",
+      type: "localeString",
     },
     // {
     //   name: "body",
