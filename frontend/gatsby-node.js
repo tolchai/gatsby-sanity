@@ -31,6 +31,31 @@ exports.createPages = async ({
     createPage
   )
 
+  const pageTemplate = path.resolve(`src/templates/Page.js`)
+  const pages = await graphql(`
+    query Page {
+      allSanityPage {
+        edges {
+          node {
+            id
+            _rawSlug
+          }
+        }
+      }
+    }
+  `)
+
+  await buildI18nPages(
+    pages.data.allSanityPage.edges,
+    ({ node }, language, i18n) => ({
+      path: `/${language}/${node._rawSlug[language].current}`,
+      component: pageTemplate,
+      context: { page: node.id },
+    }),
+    ["common"],
+    createPage
+  )
+
   const projectTemplate = path.resolve(`src/templates/Project.js`)
   const projects = await graphql(`
     query Project {
@@ -60,31 +85,6 @@ exports.createPages = async ({
     createPage
   )
 
-  const pageTemplate = path.resolve(`src/templates/Page.js`)
-  const pages = await graphql(`
-    query Page {
-      allSanityPage {
-        edges {
-          node {
-            id
-            _rawSlug
-          }
-        }
-      }
-    }
-  `)
-
-  await buildI18nPages(
-    pages.data.allSanityPage.edges,
-    ({ node }, language, i18n) => ({
-      path: `/${language}/${node._rawSlug[language].current}`,
-      component: pageTemplate,
-      context: { page: node.id },
-    }),
-    ["common"],
-    createPage
-  )
-
   await build404Pages(createPage)
 
   createRedirect({ fromPath: "/", toPath: "/en", isPermanent: true })
@@ -96,7 +96,7 @@ exports.createPages = async ({
       statusCode: 404,
     })
   )
-  createRedirect({ fromPath: "/", toPath: "/en", isPermanent: true })
+
   createRedirect({ fromPath: "/*", toPath: "/404", statusCode: 404 })
 }
 
