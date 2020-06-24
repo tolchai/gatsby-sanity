@@ -56,7 +56,7 @@ exports.createPages = async ({
     createPage
   )
 
-  const projectTemplate = path.resolve(`src/templates/Project.js`)
+  const projectTemplate = path.resolve(`src/templates/project.js`)
   const projects = await graphql(`
     query Project {
       allSanityProject {

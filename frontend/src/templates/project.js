@@ -7,7 +7,7 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const Project = ({ data }) => {
-  const { t } = useTranslation("project")
+  // const { t } = useTranslation("project")
   const { title, mainImage, description, categories } = data.sanityProject
   return (
     <Layout>
